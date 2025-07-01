@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const NUM_TEACHERS = 5;
+const NUM_TEACHERS = 50;
 const NUM_COURSES = 100;
-const NUM_STUDENTS = 20;
+const NUM_STUDENTS = 100;
 
 async function seed() {
   try {
