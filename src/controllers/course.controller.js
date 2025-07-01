@@ -121,31 +121,6 @@ export const getAllCourses = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-
-  // take certain amount at a time
-  const limit = parseInt(req.query.limit) || 10;
-  // which page to take
-  const page = parseInt(req.query.page) || 1;
-
-  const total = await db.Course.count();
-
-  try {
-    const courses = await db.Course.findAll({
-      // include: [db.Student, db.Teacher],
-      limit: limit,
-      offset: (page - 1) * limit,
-    });
-    res.json({
-      meta: {
-        totalItems: total,
-        page: page,
-        totalPages: Math.ceil(total / limit),
-      },
-      data: courses,
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
 };
 
 /**
