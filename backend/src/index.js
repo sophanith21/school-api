@@ -6,10 +6,13 @@ import teacherRoutes from "./routes/teacher.routes.js";
 import authenticateRoutes from "./routes/authentication.routes.js";
 import { serveSwagger, setupSwagger } from "./config/swagger.js";
 import validateJWT from "./middleware/validateJWT.js";
+import cors from 'cors'
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 app.use(express.json());
 
