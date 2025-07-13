@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated, logout } from "../utils/auth";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const user = token ? JSON.parse(atob(token.split(".")[1])) : null;
+  const { auth, setAuth } = useContext(AuthContext);
 
-  const handleLogout = (e) => {
-    e.preventDefault()
+  const handleLogout = () => {
     logout();
+    setAuth(null);
     navigate("/");
   };
 
@@ -54,7 +55,7 @@ export default function Navbar() {
           {/* User info and logout */}
           <div className="flex items-center gap-4 ml-6">
             <span className="text-sm text-gray-600">
-              Logged in as <strong>{user?.email || "User"}</strong>
+              Logged in as <strong>{auth?.name || "User"}</strong>
             </span>
             <button
               onClick={handleLogout}
@@ -62,7 +63,7 @@ export default function Navbar() {
             >
               Logout
             </button>
-          </div> 
+          </div>
         </>
       ) : (
         <div className="flex items-center gap-4">

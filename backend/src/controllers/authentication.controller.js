@@ -88,6 +88,7 @@ export const loginUser = async (req, res) => {
         error: "Authentication Failed",
       });
     }
+    // Does not contain email for safety reason
     let payload = {
       userId: result.id,
       name: result.name,

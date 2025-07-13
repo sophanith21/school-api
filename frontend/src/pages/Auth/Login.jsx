@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useLocation, Link, replace } from "react-router-dom";
-import { isAuthenticated, setToken } from "../../utils/auth";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { setToken } from "../../utils/auth";
 import API from "../../api";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -8,18 +8,18 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const autoLoginData = location.state;
-  
 
   const [email, setEmail] = useState(autoLoginData?.email || "");
   const [password, setPassword] = useState(autoLoginData?.password || "");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { auth, setAuth } = useContext(AuthContext);
 
-  useEffect(()=>{
-    if (isAuthenticated()){
-      navigate('/dashboard');
+  useEffect(() => {
+    if (auth) {
+      navigate("/dashboard");
     }
-  })
+  });
 
   useEffect(() => {
     if (autoLoginData?.email && autoLoginData?.password) {
@@ -27,18 +27,19 @@ export default function Login() {
     }
   }, [autoLoginData]);
 
-
-
   const handleSubmit = async (e) => {
     // implement your login logic here
-    e.preventDefault()
+    e.preventDefault();
+    setLoading(true);
     try {
-      const result = await API.post('/login',{email,password});
+      const result = await API.post("/login", { email, password });
       setToken(result.data["JWT Token"]);
-      navigate("/dashboard");
-    } catch(err){
-      console.error('Registration failed',err);
-      console.warn("Registration Failed");
+      setAuth(result.data["JWT Token"]);
+    } catch (err) {
+      console.error("Login failed", err);
+      setError("Login Failed");
+    } finally {
+      setLoading(false);
     }
   };
 

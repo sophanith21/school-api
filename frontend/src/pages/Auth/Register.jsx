@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../../api";
-import axios from "axios";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -13,11 +12,16 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     // implement your registration logic here
-    try{
-      API.post('/register',{name,email,password})
-      navigate('/', {state: {email,password}});
-    } catch(err){
-      console.error(err);
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await API.post("/register", { name, email, password });
+      navigate("/", { state: { email, password } });
+    } catch (err) {
+      console.error("Registration failed", err);
+      setError("Registration Failed");
+    } finally {
+      setLoading(false);
     }
   };
 
