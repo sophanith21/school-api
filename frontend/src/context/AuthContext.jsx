@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuthStatus();
-  }, [localStorage.getItem("jwt_token")]);
+  }, [auth]);
 
   const conTextValue = {
     auth,
